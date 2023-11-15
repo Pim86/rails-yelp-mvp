@@ -1,0 +1,34 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @restaurant %>
+
+<h2>Reviews</h2>
+<ul>
+  <% @restaurant.reviews.each do |review| %>
+    <li>
+      <%= review.content %>
+      <%= review.rating %>
+      <%= link_to 'Delete', review_path(review), data: { turbo_method: 'delete' } %>
+    </li>
+  <% end %>
+</ul>
+
+<div>
+  <%= link_to "Edit this restaurant", edit_restaurant_path(@restaurant) %> |
+  <%= link_to "Back to restaurants", restaurants_path %>
+
+  <%= button_to "Destroy this restaurant", @restaurant, method: :delete %>
+</div>
+
+<h1>Reviews</h1>
+
+<!-- POST /restaurants/:restaurant_id/reviews/new (restaurant_reviews_path) -->
+<!-- POST /reviews/new (reviews_path) -->
+<%= simple_form_for [@restaurant, @review] do |f| %>
+  <%= f.label :review %>
+  <%= f.text_area :content %>
+  <%#= f.association :restaurant %>
+  <%= f.label :rating %>
+  <%= f.number_field :rating, min: 0, max: 5 %>
+  <%= f.submit %>
+<% end %>
